@@ -1,38 +1,97 @@
-.App {
-  text-align: center;
+
+
+
+
+.albumList{
+    display: flex;
+    width: 100%;
+    column-gap: 20px;
+    flex-wrap: wrap;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+.albumCard{
+    position: relative;
+    width: 200px;
+    height: 150px;
+    background-image: linear-gradient(rgb(150, 150, 255),white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.deleteAlbum{
+    position: absolute;
+    right: 10px;
+    top: 10px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.deleteAlbum:hover{
+    color: red;
+
 }
 
-.App-link {
-  color: #61dafb;
+.albumCard input{
+    box-sizing: border-box;
+    width: 180px;
+    border-radius: 20px;
+    padding-left: 10px;
+}
+.albumCard form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.albumCard button{
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 20px;
+    width: 100px;
+    height: 30px;
+    background-color: rgb(82, 82, 255);
+}
+
+.albumCard:hover{
+    cursor: pointer;
+    background-image: linear-gradient(rgb(104, 104, 255),white);;
+}
+
+
+.imageList{
+    display: flex;
+    width: 100%;
+    column-gap: 20px;
+    flex-wrap: wrap;
+}
+
+.imagecard{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+}
+
+.sceleton{
+    
+    animation: xyz 1s alternate infinite;
+    animation-duration: 1s;
+    
+
+}
+
+@keyframes xyz {
+    
+    0%{ 
+        background-color: rgb(209, 213, 224);
+    }
+
+    100% {
+        background-color: rgb(135, 137, 144);
+    }
+    
 }
