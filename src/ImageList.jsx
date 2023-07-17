@@ -13,13 +13,11 @@ function ImageList({ currentAlbum, search }) {
   const [imageList, setImageList] = useState([])
   const [change, setChange] = useState(0)
 
-  const [time, setTime] = useState(false)
+  
 
   const deleteImage = (name) => {
-
     const deleteRef = ref(storage, `${currentAlbum}/${name}`)
     deleteObject(deleteRef).then().catch((err) => console.log(err))
-
     setTimeout(() => {
       setChange(change + 1)
     }, 1000);
@@ -41,11 +39,6 @@ function ImageList({ currentAlbum, search }) {
 
   }
 
-  setTimeout(()=>{
-
-    setTime(true)
-
-  }, 1000)
 
   useEffect(() => {
     let array = []
@@ -61,7 +54,14 @@ function ImageList({ currentAlbum, search }) {
         })
       })
     }
-  })
+
+    setTimeout(() => {
+      setImageList(array)
+    }, 1000);
+
+    
+
+  },[change])
     
 
   return (
