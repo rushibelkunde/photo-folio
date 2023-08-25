@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import AlbumForm from './AlbumForm'
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore'
-// import { deleteObject, ref } from 'firebase/storage'
+import { deleteObject, ref } from 'firebase/storage'
+import { storage } from './FirebaseInit'
 import { db } from './FirebaseInit'
 import AlbumCard from './AlbumCard'
 
@@ -10,7 +11,18 @@ function AlbumList({currentAlbum,setCurrentAlbum}) {
   const [albumList, setAlbumList] = useState([])
 
   const deleteAlbum = async (id)=>{
+
+    try{
     await deleteDoc(doc(db, "albums", id))
+
+    const albumStorageRef = ref(storage, id);
+    await deleteObject(albumStorageRef);
+
+    console.log(`Album ${id} deleted from Firestore and Storage.`);
+  } catch (error) {
+    console.error("Error deleting album:", error);
+  }
+
   }
 
   useEffect(()=>{

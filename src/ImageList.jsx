@@ -17,51 +17,56 @@ function ImageList({ currentAlbum, search }) {
 
   const deleteImage = (name) => {
     const deleteRef = ref(storage, `${currentAlbum}/${name}`)
-    deleteObject(deleteRef).then().catch((err) => console.log(err))
-    setTimeout(() => {
-      setChange(change + 1)
-    }, 1000);
-
+    deleteObject(deleteRef).then(setChange(change + 1)).catch((err) => console.log(err))
   }
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const imagesRef = ref(storage, `${currentAlbum}/${image.name}`);
-    uploadBytes(imagesRef, image).then((snapshot) => {
-      console.log('Uploaded a blob or file!');
-      console.log(snapshot)
-    });
-    console.log(image)
+    
+    uploadBytes(imagesRef, image)
+      .then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+        console.log(snapshot);
+        
+        // After successful upload, increment the change state
+        setChange(change + 1);
+      })
+      .catch((error) => {
+        console.error('Error uploading image:', error);
+      });
+  };
+  
 
-    setTimeout(() => {
-      setChange(change + 1)
-    }, 1000);
 
-  }
-
+ 
 
   useEffect(() => {
-    let array = []
-    console.log(currentAlbum)
     if (currentAlbum !== "") {
-      const imagesListRef = ref(storage, `${currentAlbum}/`)
-      console.log(imagesListRef)
+      const imagesListRef = ref(storage, `${currentAlbum}/`);
+  
       listAll(imagesListRef).then((response) => {
-        response.items.forEach((item) => {
-          getDownloadURL(item).then((url) => {
-            array.push({ name: item.name, url: url })
+        const promises = response.items.map((item) => {
+          return getDownloadURL(item);
+        });
+  
+        Promise.all(promises)
+          .then((urls) => {
+            const imageArray = response.items.map((item, index) => {
+              return { name: item.name, url: urls[index] };
+            });
+  
+            setImageList(imageArray);
           })
-        })
-      })
+          .catch((error) => {
+            console.error("Error fetching image URLs:", error);
+          });
+      });
+    } else {
+      setImageList([]); // If currentAlbum is empty, clear the image list
     }
-
-    setTimeout(() => {
-      setImageList(array)
-    }, 1000);
-
-    
-
-  },[change])
+  }, [currentAlbum, change]);
+  
     
 
   return (
